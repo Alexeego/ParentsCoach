@@ -9,11 +9,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.alexey.parentscoach.user.User;
-import static com.example.alexey.parentscoach.utils.ConnectionUtil.*;
-import static com.example.alexey.parentscoach.MainActivity.*;
+import com.example.alexey.parentscoach.classes.User;
+
+import static com.example.alexey.parentscoach.MainActivity.connectError;
+import static com.example.alexey.parentscoach.MainActivity.socket;
+import static com.example.alexey.parentscoach.MainActivity.user;
+import static com.example.alexey.parentscoach.utils.ConnectionUtil.transformToJson;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,7 +61,6 @@ public class ConnectionFragment extends Fragment {
                     user = new User(editNameAuthorization.getText().toString(), "", editPasswordAuthorization.getText().toString());
                     socket.emit("login", transformToJson(user));
                 } catch (Exception e) {
-                    Toast.makeText(context, "" + e, Toast.LENGTH_SHORT).show();
                     connectError();
                 }
             }

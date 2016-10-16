@@ -1,23 +1,34 @@
 package com.example.alexey.parentscoach;
 
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+
+import com.example.alexey.parentscoach.classes.Child;
+
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+
+import static com.example.alexey.parentscoach.MainActivity.childes;
+import static com.example.alexey.parentscoach.MainActivity.context;
 
 
 public class MainWindowFragment extends Fragment {
 
 
-    ListView listRays;
-    static LinkedList<Map<String, Object>> data = null;
-    static SimpleAdapter simpleAdapterForRays = null;
+    ListView listChildes;
+    static LinkedList<Map<String, Object>> dataChildes = null;
+    static SimpleAdapter simpleAdapterForChildes = null;
     private static Integer positionRays = 0;
 
     @Override
@@ -26,62 +37,54 @@ public class MainWindowFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_main_window, container, false);
 
-        listRays = (ListView)view.findViewById(R.id.listView);
-        data = new LinkedList<>();
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(context, AddChildActivity.class));
+            }
+        });
 
-//        simpleAdapterForRays = new SimpleAdapter(MainActivity.context, data, R.layout.item_list_rays, new String[]{}, new int[]{}) {
-//            @Override
-//            public View getView(int position, View convertView, ViewGroup parent) {
-//                View item = convertView;
-//                if(item == null){
-//                    item = getActivity().getLayoutInflater().inflate(R.layout.item_list_rays, parent, false);
-//                }
-//                Ray ray = MainActivity.rays.get(position);
-//                ((TextView) item.findViewById(R.id.itemId))
-//                        .setText(String.valueOf((int)ray.id));
-//                ((TextView) item.findViewById(R.id.itemCoordinates))
-//                        .setText(ray.coordinates.country + ", " + ray.coordinates.city);
-//                ((TextView) item.findViewById(R.id.itemDateSending))
-//                        .setText("Дата отправления:\n" + new SimpleDateFormat("dd.MM.yyyy, HH:mm:ss").format(new Date(ray.timeSending.getTime() - 3600000)));
-//                ((TextView) item.findViewById(R.id.itemTimeInWay))
-//                        .setText("Время в пути:\n" + new SimpleDateFormat("HH:mm:ss").format(new Date(ray.timeInWay - 10800000)));
-//                TextView status = (TextView) item.findViewById(R.id.itemStatus);
-//                status.setText(ray.stateRay.toString());
-//                try{
-//                    status.setTextColor(getResources().getColor(colors[ray.stateRay.ordinal()]));
-//                } catch (Exception ignore){}
-//                return item;
-//            }
-//        };
-//        listRays.setAdapter(simpleAdapterForRays);
-//        listRays.setSelection(positionRays);
-//        listRays.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                if (MainActivity.rays != null) {
-//                    try {
-//                        selectedRay = null;
-//                        for (Ray ray : MainActivity.rays) {
-//                            if (ray.id == Integer.parseInt(((TextView) view.findViewById(R.id.itemId)).getText().toString())) {
-//                                selectedRay = ray;
-//                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-//                                MainActivity.stackFragments.push(MainActivity.fragment);
-//                                MainActivity.fragment = new ItemListRaysFragment();
-//                                fragmentManager.beginTransaction().
-//                                        replace(R.id.content_frame, MainActivity.fragment).commit();
-//                                break;
-//                            }
-//                        }
-//                    } catch (Exception ignored) {}
-//                }
-//            }
-//        });
+        listChildes = (ListView)view.findViewById(R.id.listView);
+        dataChildes = new LinkedList<>();
+
+        if(childes != null){
+            for(Child child: childes){
+                dataChildes.add(new HashMap<String, Object>());
+            }
+        }
+
+        simpleAdapterForChildes = new SimpleAdapter(MainActivity.context, dataChildes, R.layout.item_list_tasks, new String[]{}, new int[]{}) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View item = convertView;
+                if(item == null){
+                    item = getActivity().getLayoutInflater().inflate(R.layout.item_list_tasks, parent, false);
+                }
+
+                //TODO
+                return item;
+            }
+        };
+        listChildes.setAdapter(simpleAdapterForChildes);
+        listChildes.setSelection(positionRays);
+        listChildes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (MainActivity.childes != null) {
+                    try {
+                        //TODO
+                    } catch (Exception ignored) {
+                    }
+                }
+            }
+        });
         return view;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        positionRays = listRays.getFirstVisiblePosition();
+        positionRays = listChildes.getFirstVisiblePosition();
     }
 }

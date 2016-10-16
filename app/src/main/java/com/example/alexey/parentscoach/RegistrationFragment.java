@@ -9,8 +9,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.alexey.parentscoach.user.User;
+import com.example.alexey.parentscoach.classes.User;
 import com.example.alexey.parentscoach.utils.ConnectionUtil;
+
+import static com.example.alexey.parentscoach.MainActivity.user;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,7 +38,8 @@ public class RegistrationFragment extends Fragment {
                 if (passwordFirst.getText().toString().equals(passwordSecond.getText().toString())) {
                     buttonReg.setEnabled(false);
                     try {
-                        MainActivity.socket.emit("sign up", ConnectionUtil.transformToJson(new User("","","")));
+                        user = new User(editNameReg.getText().toString(), editNameReg.getText().toString(), passwordFirst.getText().toString());
+                        MainActivity.socket.emit("signup", ConnectionUtil.transformToJson(user));
                     } catch (Exception e) {
                         MainActivity.connectError();
                     }

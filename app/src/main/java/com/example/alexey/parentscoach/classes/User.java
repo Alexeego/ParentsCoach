@@ -1,4 +1,4 @@
-package com.example.alexey.parentscoach.user;
+package com.example.alexey.parentscoach.classes;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 

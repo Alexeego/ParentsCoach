@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -23,16 +24,16 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.alexey.parentscoach.user.User;
+import com.example.alexey.parentscoach.classes.Child;
+import com.example.alexey.parentscoach.classes.User;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Stack;
 
-import static com.example.alexey.parentscoach.EventsList.onDisconnect;
-import static com.example.alexey.parentscoach.EventsList.hello;
-import static com.example.alexey.parentscoach.EventsList.onLogin;
+import static com.example.alexey.parentscoach.EventsList.*;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -118,7 +119,6 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     work = false;
-                    Toast.makeText(context, "qwe", Toast.LENGTH_SHORT).show();
                 }
             });
             alertDialog.dismiss();
@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         protected void onProgressUpdate(String... values) {
-            Toast.makeText(context, values[0], Toast.LENGTH_SHORT).show();
+            Snackbar.make(context.getCurrentFocus(), values[0], Snackbar.LENGTH_LONG).show();
         }
 
         @Override
@@ -163,28 +163,34 @@ public class MainActivity extends AppCompatActivity
             progressDialog.dismiss();
             try {
                 if (socket != null) {
-                    Toast.makeText(MainActivity.context, "Соединение установленно", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(context.getCurrentFocus(), "Соединение установленно", Snackbar.LENGTH_SHORT).show();
                     MainActivity.socket = socket;
                     connectAuthorization();
                     return;
                 }
             } catch (Exception ignored) {}
-            Toast.makeText(MainActivity.context, "Соединение не удалось установить", Toast.LENGTH_SHORT).show();
+            Snackbar.make(context.getCurrentFocus(), "Соединение не удалось установить", Snackbar.LENGTH_SHORT).show();
             alertDialog.show();
         }
 
         private void addListenersServer(Socket socket) throws Exception {
-            socket.on("hello", hello);
-            socket.on("login", onLogin);
             socket.on("disconnect", onDisconnect);
+            socket.on("signup", onSignUp);
+            socket.on("login", onLogin);
+
+            socket.on("getChildes", onGetChildes);
+            socket.on("addChild", onAddChild);
         }
     }
 
     private static void deleteListenersServer(Socket socket) {
         socket.disconnect();
-        socket.off("hello", hello);
-        socket.off("onLogin", onLogin);
-        socket.off("onDisconnect", onDisconnect);
+        socket.off("disconnect", onDisconnect);
+        socket.off("signup", onSignUp);
+        socket.off("login", onLogin);
+
+        socket.off("getChildes", onGetChildes);
+        socket.off("addChild", onAddChild);
     }
 
 
@@ -198,6 +204,7 @@ public class MainActivity extends AppCompatActivity
     static ConnectionState nowConnectionState = ConnectionState.TRY_CONNECTION;
     static Stack<Fragment> stackFragments = new Stack<>();
     static Fragment fragment = null;
+    static List<Child> childes = null;
     static User user = null;
     static Socket socket = null;
 
@@ -211,7 +218,8 @@ public class MainActivity extends AppCompatActivity
             stackFragments.clear();
             context.setEnterFragment();
             context.tryConnectOrCreateDialog();
-            Toast.makeText(MainActivity.context, "Соединение разорвано", Toast.LENGTH_SHORT).show();
+            Snackbar.make(context.getCurrentFocus(), "Соединение разорвано", Snackbar.LENGTH_SHORT).show();
+            //Toast.makeText(MainActivity.context, "Соединение разорвано", Toast.LENGTH_SHORT).show();
         }
     }
     static void connectRegistration() {
