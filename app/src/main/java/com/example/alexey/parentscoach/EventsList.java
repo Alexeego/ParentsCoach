@@ -49,10 +49,9 @@ public class EventsList {
                             String token = data.getString("token");
                             user.setToken(token);
                             connectSuccess();
+                            Snackbar.make(context.getCurrentFocus(), "Вход успешно произведён", Snackbar.LENGTH_SHORT).show();
                             context.setEnterFragment();
                         } else {
-                            ConnectionFragment.editNameAuthorization.setEnabled(true);
-                            ConnectionFragment.editPasswordAuthorization.setEnabled(true);
                             ConnectionFragment.buttonAuthorization.setEnabled(true);
                             Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
                         }
@@ -79,7 +78,7 @@ public class EventsList {
                             Snackbar.make(context.getCurrentFocus(), "Регистрация прошла успешно", Snackbar.LENGTH_SHORT).show();
                             context.setEnterFragment();
                         } else {
-                            RegistrationFragment.buttonReg.setEnabled(true);
+                            ConnectionFragment.buttonReg.setEnabled(true);
                             Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {
@@ -143,7 +142,6 @@ public class EventsList {
                                 emptyLayout.setVisibility(View.VISIBLE);
                             }
                         } else {
-                            RegistrationFragment.buttonReg.setEnabled(true);
                             Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {
@@ -187,7 +185,6 @@ public class EventsList {
 //                                emptyLayout.setVisibility(View.VISIBLE);
 //                            }
                         } else {
-//                            RegistrationFragment.buttonReg.setEnabled(true);
                             Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {

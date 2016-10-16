@@ -201,7 +201,6 @@ public class MainActivity extends AppCompatActivity
     enum ConnectionState {
         TRY_CONNECTION,
         AUTHORIZATION,
-        REGISTRATION,
         CONNECT
     }
 
@@ -223,11 +222,7 @@ public class MainActivity extends AppCompatActivity
             context.setEnterFragment();
             context.tryConnectOrCreateDialog();
             Snackbar.make(context.getCurrentFocus(), "Соединение разорвано", Snackbar.LENGTH_SHORT).show();
-            //Toast.makeText(MainActivity.context, "Соединение разорвано", Toast.LENGTH_SHORT).show();
         }
-    }
-    static void connectRegistration() {
-        nowConnectionState = ConnectionState.REGISTRATION;
     }
     static void connectAuthorization() {
         nowConnectionState = ConnectionState.AUTHORIZATION;
@@ -243,10 +238,6 @@ public class MainActivity extends AppCompatActivity
             }
             case AUTHORIZATION: {
                 fragment = new ConnectionFragment();
-                break;
-            }
-            case REGISTRATION: {
-                fragment = new RegistrationFragment();
                 break;
             }
             case CONNECT: {
@@ -265,9 +256,6 @@ public class MainActivity extends AppCompatActivity
         } else {
             if (nowConnectionState == ConnectionState.CONNECT && fragment instanceof MainWindowFragment) {
                 connectError();
-            } else if (nowConnectionState == ConnectionState.REGISTRATION && fragment instanceof RegistrationFragment) {
-                connectAuthorization();
-                setEnterFragment();
             } else if (!stackFragments.isEmpty()) {
                 fragment = stackFragments.pop();
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
