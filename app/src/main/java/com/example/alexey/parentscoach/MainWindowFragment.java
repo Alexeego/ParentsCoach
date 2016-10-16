@@ -9,23 +9,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import com.example.alexey.parentscoach.classes.Child;
+import com.example.alexey.parentscoach.classes.Task;
+import com.example.alexey.parentscoach.utils.WordUtil;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-import static com.example.alexey.parentscoach.MainActivity.childes;
-import static com.example.alexey.parentscoach.MainActivity.context;
+import static com.example.alexey.parentscoach.MainActivity.*;
 
 
 public class MainWindowFragment extends Fragment {
 
 
-    ListView listChildes;
+    static ListView listChildes;
+    static LinearLayout emptyLayout;
     static LinkedList<Map<String, Object>> dataChildes = null;
     static SimpleAdapter simpleAdapterForChildes = null;
     private static Integer positionRays = 0;
@@ -35,6 +40,8 @@ public class MainWindowFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_main_window, container, false);
+
+        emptyLayout = (LinearLayout)view.findViewById(R.id.emptyLayout);
 
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -46,21 +53,50 @@ public class MainWindowFragment extends Fragment {
 
         listChildes = (ListView)view.findViewById(R.id.listView);
         dataChildes = new LinkedList<>();
-
         if(childes != null){
             for(Child child: childes){
                 dataChildes.add(new HashMap<String, Object>());
             }
+            if(childes.size()>0){
+                emptyLayout.setVisibility(View.INVISIBLE);
+                listChildes.setVisibility(View.VISIBLE);
+            } else {
+                listChildes.setVisibility(View.INVISIBLE);
+                emptyLayout.setVisibility(View.VISIBLE);
+            }
         }
 
-        simpleAdapterForChildes = new SimpleAdapter(MainActivity.context, dataChildes, R.layout.item_list_tasks, new String[]{}, new int[]{}) {
+        simpleAdapterForChildes = new SimpleAdapter(MainActivity.context, dataChildes, R.layout.item_list, new String[]{}, new int[]{}) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View item = convertView;
                 if(item == null){
-                    item = getActivity().getLayoutInflater().inflate(R.layout.item_list_tasks, parent, false);
+                    item = getActivity().getLayoutInflater().inflate(R.layout.item_list, parent, false);
+                }
+                Child child = childes.get(position);
+
+                ((ImageView)item.findViewById(R.id.itemImageBig)).setImageDrawable(getResources().getDrawable(android.R.drawable.sym_def_app_icon));
+
+                ((TextView)item.findViewById(R.id.itemTextName)).setText(child.getName());
+                int countInProcess = 0;
+                child.getTasks();
+                for (Task task : child.getTasks()){
+                    if(task.getState() == 0)
+                        countInProcess++;
+                }
+                String resultState;
+                if(countInProcess != 0){
+                    StringBuilder builder = new StringBuilder("Ожидает ");
+                    WordUtil.wordEdit(builder, countInProcess, "поступ", "ков", "ок", "ка");
+                    resultState = builder.toString();
+
+                    ((ImageView)item.findViewById(R.id.itemImageSmall)).setImageDrawable(getResources().getDrawable(android.R.drawable.star_big_off));
+                } else {
+                    resultState = "Всё сделано";
+                    ((ImageView)item.findViewById(R.id.itemImageSmall)).setImageDrawable(getResources().getDrawable(android.R.drawable.star_big_on));
                 }
 
+                ((TextView)item.findViewById(R.id.itemTextState)).setText(resultState);
                 //TODO
                 return item;
             }
@@ -78,6 +114,8 @@ public class MainWindowFragment extends Fragment {
                 }
             }
         });
+
+        socket.emit("getChildes", "{\"token\":\"" + user.getToken() + "\"}");
         return view;
     }
 

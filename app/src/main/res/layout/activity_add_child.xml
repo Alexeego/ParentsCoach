@@ -26,40 +26,40 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
-            android:text="Имя"
             android:ems="10"
-            android:id="@+id/editName"
-            android:layout_weight="1" />
+            android:id="@+id/editNameAddChild"
+            android:layout_weight="1"
+            android:hint="Имя" />
 
         <Spinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/spinnerSex"
+            android:id="@+id/spinnerSexAddChild"
             android:layout_weight="1"
-            android:spinnerMode="dialog" />
+            android:spinnerMode="dropdown" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
             android:ems="10"
-            android:id="@+id/editAge"
+            android:id="@+id/editAgeAddChild"
             android:layout_weight="1"
-            android:hint="Ещё вопрос" />
+            android:hint="Укажите возраст ребёнка" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/editText"
             android:layout_weight="1"
-            android:hint="И ещё вопрос" />
+            android:hint="И вопрос" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/editText2"
             android:layout_weight="1"
-            android:hint="А потом ещё" />
+            android:hint="А потом ещё вопрос" />
 
         <Button
             android:layout_width="wrap_content"

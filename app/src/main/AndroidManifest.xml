@@ -24,7 +24,8 @@
         <activity
             android:name=".PrefActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".AddChildActivity"></activity>
+        <activity android:name=".AddChildActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

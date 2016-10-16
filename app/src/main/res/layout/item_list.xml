@@ -7,14 +7,14 @@
     <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:id="@+id/imageChild"
+        android:id="@+id/itemImageBig"
         android:layout_centerVertical="true" />
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_toRightOf="@+id/imageChild"
+        android:layout_toRightOf="@+id/itemImageBig"
         android:layout_marginRight="40dp"
         android:layout_alignParentStart="false"
         android:layout_marginLeft="5dp">
@@ -23,19 +23,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/textNameChild" />
+            android:id="@+id/itemTextName" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:id="@+id/textStateChild" />
+            android:id="@+id/itemTextState" />
     </LinearLayout>
 
     <ImageView
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:id="@+id/imageChildSmille"
+        android:id="@+id/itemImageSmall"
         android:layout_alignParentRight="true"
         android:layout_alignWithParentIfMissing="false"
         android:layout_gravity="center"
