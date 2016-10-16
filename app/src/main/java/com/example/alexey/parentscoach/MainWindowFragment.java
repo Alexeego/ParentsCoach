@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
@@ -23,14 +24,20 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-import static com.example.alexey.parentscoach.MainActivity.*;
+import static com.example.alexey.parentscoach.MainActivity.childes;
+import static com.example.alexey.parentscoach.MainActivity.context;
+import static com.example.alexey.parentscoach.MainActivity.fragment;
+import static com.example.alexey.parentscoach.MainActivity.socket;
+import static com.example.alexey.parentscoach.MainActivity.stackFragments;
+import static com.example.alexey.parentscoach.MainActivity.user;
 
 
 public class MainWindowFragment extends Fragment {
 
 
-    static ListView listChildes;
-    static LinearLayout emptyLayout;
+    ListView listChildes;
+    static LinearLayout lisLayout;
+    static RelativeLayout emptyLayout;
     static LinkedList<Map<String, Object>> dataChildes = null;
     static SimpleAdapter simpleAdapterForChildes = null;
     private static Integer positionRays = 0;
@@ -41,7 +48,8 @@ public class MainWindowFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_main_window, container, false);
 
-        emptyLayout = (LinearLayout)view.findViewById(R.id.emptyLayout);
+        emptyLayout = (RelativeLayout)view.findViewById(R.id.emptyLayout);
+        lisLayout = (LinearLayout)view.findViewById(R.id.listLayout);
 
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -59,9 +67,9 @@ public class MainWindowFragment extends Fragment {
             }
             if(childes.size()>0){
                 emptyLayout.setVisibility(View.INVISIBLE);
-                listChildes.setVisibility(View.VISIBLE);
+                lisLayout.setVisibility(View.VISIBLE);
             } else {
-                listChildes.setVisibility(View.INVISIBLE);
+                lisLayout.setVisibility(View.INVISIBLE);
                 emptyLayout.setVisibility(View.VISIBLE);
             }
         }
@@ -77,7 +85,7 @@ public class MainWindowFragment extends Fragment {
 
                 ((ImageView)item.findViewById(R.id.itemImageBig)).setImageDrawable(getResources().getDrawable(android.R.drawable.sym_def_app_icon));
 
-                ((TextView)item.findViewById(R.id.itemTextName)).setText(child.getName());
+                ((TextView)item.findViewById(R.id.itemTextTitle)).setText(child.getName());
                 int countInProcess = 0;
                 child.getTasks();
                 for (Task task : child.getTasks()){
@@ -97,7 +105,7 @@ public class MainWindowFragment extends Fragment {
                 }
 
                 ((TextView)item.findViewById(R.id.itemTextState)).setText(resultState);
-                //TODO
+
                 return item;
             }
         };
@@ -108,7 +116,10 @@ public class MainWindowFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (MainActivity.childes != null) {
                     try {
-                        //TODO
+                        stackFragments.push(fragment);
+                        fragment = new TasksCurrentChildrenFragment();
+                        TasksCurrentChildrenFragment.currentTasks = childes.get(position).getTasks();
+                        context.getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
                     } catch (Exception ignored) {
                     }
                 }

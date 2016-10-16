@@ -180,6 +180,8 @@ public class MainActivity extends AppCompatActivity
 
             socket.on("getChildes", onGetChildes);
             socket.on("addChild", onAddChild);
+
+            socket.on("updateChildTask", onUpdateChildTask);
         }
     }
 
@@ -191,6 +193,8 @@ public class MainActivity extends AppCompatActivity
 
         socket.off("getChildes", onGetChildes);
         socket.off("addChild", onAddChild);
+
+        socket.off("updateChildTask", onUpdateChildTask);
     }
 
 
