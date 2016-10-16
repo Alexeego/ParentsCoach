@@ -5,9 +5,9 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="240dp"
         android:id="@+id/imageView2"
-        android:background="@drawable/smiley_mal"
+        android:background="@drawable/fami_team"
         android:src="@drawable/fami_team" />
 
     <TextView
